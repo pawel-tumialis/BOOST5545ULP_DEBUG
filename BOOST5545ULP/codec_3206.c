@@ -18,10 +18,25 @@ TEST_STATUS initialise_i2s_interface(void)
     I2S_Config      hwConfig;
     Int16           result = 0;
 
-    /* Open the device with instance 0 */
+    /* Open the device with instance 2 */
     hI2s = I2S_open(I2S_INSTANCE2, DMA_POLLED, I2S_CHAN_STEREO); //I2S_POLLED
 
     /* Set the value for the configure structure */
+    hwConfig.dataFormat     = I2S_DATAFORMAT_LJUST;
+    hwConfig.dataType       = I2S_STEREO_ENABLE;
+    hwConfig.loopBackMode   = I2S_LOOPBACK_DISABLE;
+    hwConfig.fsPol          = I2S_FSPOL_LOW;
+    hwConfig.clkPol         = I2S_RISING_EDGE;
+    hwConfig.datadelay      = I2S_DATADELAY_ONEBIT;
+    hwConfig.datapack       = I2S_DATAPACK_ENABLE;
+    hwConfig.signext        = I2S_SIGNEXT_DISABLE;
+    hwConfig.wordLen        = I2S_WORDLEN_16;
+    hwConfig.i2sMode        = I2S_SLAVE;
+    hwConfig.clkDiv         = I2S_CLKDIV2; // don't care for slave mode
+    hwConfig.fsDiv          = I2S_FSDIV32; // don't care for slave mode
+    hwConfig.FError         = I2S_FSERROR_DISABLE;
+    hwConfig.OuError        = I2S_OUERROR_DISABLE;
+    /*
     hwConfig.dataType           = I2S_STEREO_ENABLE;
     hwConfig.loopBackMode       = I2S_LOOPBACK_DISABLE;
     hwConfig.fsPol              = I2S_FSPOL_LOW;
@@ -33,7 +48,7 @@ TEST_STATUS initialise_i2s_interface(void)
     hwConfig.i2sMode            = I2S_SLAVE;
     hwConfig.FError             = I2S_FSERROR_ENABLE;
     hwConfig.OuError            = I2S_OUERROR_ENABLE;
-
+    */
     /* Configure hardware registers */
     result += I2S_setup(hI2s, &hwConfig);
     result += I2S_transEnable(hI2s, TRUE);
